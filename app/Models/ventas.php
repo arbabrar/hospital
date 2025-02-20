@@ -10,7 +10,7 @@ class ventas extends Model
     use HasFactory;
     
     protected $fillable = ['paciente_id', 'fecha_venta'];
-    // Relación entre la tabla ventas y la tabla pacientes
+    // Relación entre la tabla ventas y la tabla pacientess
     // Un paciente puede tener muchas ventas
     public function paciente()
     {
