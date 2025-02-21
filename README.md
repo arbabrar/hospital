@@ -1,16 +1,23 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🏥 Sistema de Gestión de Farmacia y Hospital
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Este sistema está diseñado para la gestión automatizada de inventarios, medicamentos, pacientes y citas médicas en hospitales y farmacias. Desarrollado con **Laravel** y utilizando **PostgreSQL** como base de datos.
 
-## About Laravel
+## 🚀 Características
+- 📦 **Gestión de inventarios** de medicamentos.
+- 👩‍⚕️ **Registro de pacientes y médicos**.
+- 📅 **Agendamiento de citas médicas**.
+- 🏥 **Administración de hospital y farmacia**.
+- 📊 **Generación de reportes**.
+- 🔒 **Autenticación y roles de usuario**.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 🛠️ Tecnologías Utilizadas
+- **Backend:** Laravel  
+- **Base de Datos:** PostgreSQL  
+- **Frontend:** Blade / Bootstrap  
+- **Servidor Web:** Apache / Nginx  
+- **Autenticación:** Laravel Breeze / Sanctum  
 
+<<<<<<< HEAD
 - [Simple, fast routing engine](https://laravel.com/docs/routing).
 - [Powerful dependency injection container](https://laravel.com/docs/container).
 - Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
@@ -64,3 +71,6 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+=======
+## 📂 Estructura del Proyecto
+>>>>>>> ce8d28ccc9bb2c469a1712d2b1c0d2d2df043786
