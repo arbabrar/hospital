@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('detalle_venta', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('item_id')->constrained('inventario');
+            $table->foreignId('item_id')->constrained('inventarios');
             $table->foreignId('venta_id')->constrained('ventas');
             $table->integer('cantidad');
             $table->decimal('precio_unitario', 10, 2);

@@ -1,3 +1,24 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+body{
+    background-color: rgb(65, 71, 71);
+    font-family: "Roboto", serif;
+  font-optical-sizing: auto;
+  font-weight: <weight>;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
+}
+.card-size{
+    min-height: 400px;
+}
+.bg-hospital {
+    background-color: #1178ee; /* Color azul */
+    height: 100%; /* Asegura que la altura cubra el 100% */
+    color: rgb(244, 247, 247);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px; /* Ajusta el espaciado interno */
+}
+
+
