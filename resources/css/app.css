@@ -1,11 +1,35 @@
 body{
     background-color: rgb(65, 71, 71);
     font-family: "Roboto", serif;
-  font-optical-sizing: auto;
-  font-weight: <weight>;
-  font-style: normal;
-  font-variation-settings:
-    "wdth" 100;
+    font-optical-sizing: auto;
+    font-style: normal;
+}
+.container-margintop{
+    margin-top: 80px;
+}
+.custom-heigth{
+    min-height: 500px;
+    max-height: 510px;
+    overflow-y: auto;
+}
+.text-size{
+    font-size: 12px;
+    font-style: italic;
+    font-weight: bold;
+}
+label{
+    font-size: 0.9rem;
+    font-style: italic;
+    font-weight: bold;
+    color: #12067e;
+
+}
+.text-error{
+    font-size: 0.7rem;
+    font-style: italic;
+    font-weight: bold;
+    color: #ff0000;
+
 }
 .card-size{
     min-height: 400px;
@@ -19,6 +43,9 @@ body{
     justify-content: center;
     align-items: center;
     padding: 20px; /* Ajusta el espaciado interno */
+}
+.logo-login{
+    height: 150px;
 }
 
 

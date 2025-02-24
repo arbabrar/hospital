@@ -13,8 +13,6 @@ Route::prefix('v1')->group(function(){
     //rutas publicas
     Route::get('/public/{slug}',[ApiController::class,'categorias']);
 
-    Route::post('/admin/empleados', [EmpleadosController::class,'store']);
-    Route::post('/admin/persona',[PersonaController::class,'store']);
     //rutas de autenticacion
     Route::post('/auth/register',[AuthController::class,'register']);
     Route::post('/auth/login',[AuthController::class,'login']);
@@ -27,6 +25,8 @@ Route::prefix('v1')->group(function(){
         Route::apiResource('/admin/categoria', CategoriaController::class);
         Route::apiResource('/admin/inventario', InventarioController::class);
         Route::apiResource('/admin/medicamento',MedicamentoController::class);
+        Route::post('/admin/empleados', [EmpleadosController::class,'store']);
+        Route::post('/admin/persona',[PersonaController::class,'store']);
         
         Route::get('/auth/register',[AuthController::class,'register']);
         //::rol empleado

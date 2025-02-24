@@ -1,38 +1,78 @@
-import { useState } from 'react';
-import axios from 'axios';
+import axios from "axios";
+import { useCallback, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-const usePostPetition = (ruta, isAuthenticated) => {
-  const [data, setData] = useState(null);
+const usePostPetition = (ruta, data, autoStart = false) => {
+  const URL = import.meta.env.VITE_API_URL;
+  const token = localStorage.getItem("UPDSHospital");
+  const [datos, setDatos] = useState(data); // Datos que se envían
+  const [respuesta, setRespuesta] = useState(null); // Respuesta del servidor
+  const [cargando, setCargando] = useState(false);
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [start, setStart] = useState(autoStart);
+  const navigate = useNavigate();
 
-  const postRequest = async (payload) => {
-    setLoading(true);
-    try {
-      const headers = {};
+  const iniciarSolicitud = useCallback(() => {
+    setStart(true);
+  }, []);
 
-      // Si el usuario está autenticado, se añade el token a los headers
-      if (isAuthenticated) {
-        // Aquí se asume que el token se encuentra en localStorage con la clave 'token'
-        const token = localStorage.getItem('token');
-        if (token) {
-          headers['Authorization'] = `Bearer ${token}`;
-        }
-      }
+  useEffect(() => {
+    if (!start) return;
 
-      // Se realiza la petición POST a la ruta indicada con los headers correspondientes
-      const response = await axios.post(ruta, payload, { headers });
-      setData(response.data);
+    const fetchData = async () => {
+      setCargando(true);
       setError(null);
-    } catch (err) {
-      // Se maneja el error, se verifica si hay respuesta del servidor
-      setError(err.response ? err.response.data : err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+      let response;
+      try {
+        if (ruta === "auth/login") {
+          response = await axios.post(`${URL}${ruta}`, datos);
+        } else {
+          response = await axios.post(`${URL}${ruta}`, datos, {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          });
+        }
+        
+        setRespuesta(response.data); // Guardar la respuesta en el estado respuesta
+      } catch (err) {
+        console.log(err)
+        if (err.response) {
+          // Manejar error 422 de validación
+          //console.log(error.response)
+          if (err.response.status === 422) {
+          
+            const validationErrors = err.response.data.errors;
+            setError(validationErrors);
+          }
+          // Manejar error 401 de autenticación
+          else if (err.response.status === 401 && ruta !== "auth/login") {
+            localStorage.removeItem("UPDSHospital");
+            localStorage.removeItem("user");
+            navigate("/login"); // Redirigir a la página de login
+          }
+          // Manejar otros errores del servidor
+          else {
+            //console.log(err)
+            const errorMessage = err.response.data.message;
+            setError({ message: errorMessage });
+          }
+        }
+        // Manejar errores sin respuesta del servidor (problemas de red, etc.)
+        else {
+          setError({ message: "Ocurrió un error al enviar la solicitud" });
+        }
+      } finally {
+        setCargando(false);
+        setStart(false);
+      }
+    };
 
-  return { data, error, loading, postRequest };
+    fetchData();
+  }, [start, URL, ruta, datos, token, navigate]);
+
+  return { respuesta, cargando, error, iniciarSolicitud, setDatos };
 };
 
 export default usePostPetition;
