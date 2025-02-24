@@ -4,12 +4,21 @@ body{
     font-optical-sizing: auto;
     font-style: normal;
 }
+.text-time{
+    font-size: 1em;
+}
+.card-info{
+    min-height: 200px;
+    text-align: center;
+    font-size: 2.5em;
+    width: 100%;
+}
 .container-margintop{
     margin-top: 80px;
 }
 .custom-heigth{
-    min-height: 500px;
-    max-height: 510px;
+    min-height: 400px;
+    max-height: 500px;
     overflow-y: auto;
 }
 .text-size{

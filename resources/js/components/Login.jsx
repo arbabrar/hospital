@@ -4,7 +4,7 @@ import { Container, Card, Form, Button, Image } from "react-bootstrap";
 import Logo from "../../image/logo.png";
 import Loading from "./Utilitarios/Loading";
 import usePostPetition from "../hooks/usePostPetition";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import ErrorMessage from "./Utilitarios/Error/ErrorMessage";
 
 const Login = () => {
@@ -13,6 +13,7 @@ const Login = () => {
         handleSubmit,
         formState: { errors },
     } = useForm();
+    if (localStorage.getItem("UPDSHospital")) return <Navigate to="/updsHospital"/>
     const navigate = useNavigate();
     const [inputData, setInputData] = useState({ email: '', password: '' });
     const {respuesta, cargando, error, iniciarSolicitud, setDatos } = usePostPetition('auth/login', inputData, false);
