@@ -35,7 +35,7 @@ const Menu = () => {
                             title={
                                 <span>
                                     <IoSettings style={{ marginRight: "5px" }} />
-                                    Opciones
+                                    Opcion
                                 </span>
                             }
                             id="basic-nav-dropdown"
