@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\personas as Persona;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class PersonaController extends Controller
 {
@@ -94,5 +95,27 @@ class PersonaController extends Controller
 
         $persona->delete();
         return response()->json(['message' => 'Persona eliminada con éxito'], 200);
+    }
+
+    public function getInfoPersona($data)
+    {
+        // Limpiar el parámetro de búsqueda
+        $data = trim($data);
+
+        // Validar que se proporcione un término de búsqueda
+        if (empty($data)) {
+            return response()->json(['error' => 'El parámetro de búsqueda es requerido.'], 400);
+        }
+
+        try {
+            $persona = DB::table('InfoPersona')
+                ->where('nombre_completo', 'LIKE', '%' . $data . '%')
+                ->orWhere('nrodocumento', 'LIKE', '%' . $data . '%')
+                ->get();
+
+            return response()->json(['persona' => $persona], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Error al obtener la información: ' . $e->getMessage()], 500);
+        }
     }
 }

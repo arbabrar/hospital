@@ -12,7 +12,8 @@ use App\Http\Controllers\PersonaController;
 Route::prefix('v1')->group(function(){
     //rutas publicas
     Route::get('/public/{slug}',[ApiController::class,'categorias']);
-
+    Route::post('/admin/persona',[PersonaController::class,'store']);
+    Route::post('/admin/empleados', [EmpleadosController::class,'store']);
     //rutas de autenticacion
     Route::post('/auth/register',[AuthController::class,'register']);
     Route::post('/auth/login',[AuthController::class,'login']);
@@ -21,12 +22,13 @@ Route::prefix('v1')->group(function(){
 
     Route::group(['middleware'=>'auth:sanctum'], function () {
         Route::post('/auth/logout',[AuthController::class,'logout']);
+        Route::get('/admin/buscarPersona/{data}',[PersonaController::class,'getInfoPersona']);
         //::rol admin
         Route::apiResource('/admin/categoria', CategoriaController::class);
         Route::apiResource('/admin/inventario', InventarioController::class);
         Route::apiResource('/admin/medicamento',MedicamentoController::class);
-        Route::post('/admin/empleados', [EmpleadosController::class,'store']);
-        Route::post('/admin/persona',[PersonaController::class,'store']);
+       
+      
         
         Route::get('/auth/register',[AuthController::class,'register']);
         //::rol empleado

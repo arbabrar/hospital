@@ -1,16 +1,21 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Container, Row, Col, Card, Button, Badge } from "react-bootstrap";
+import { Container, Row, Col, Card, Button, Badge, DropdownButton, Dropdown } from "react-bootstrap";
 import { FaMailBulk } from "react-icons/fa";
 import { MdSpeakerNotes } from "react-icons/md";
 import FieldSearch from "../Utilitarios/FieldSearch";
 import TablePersonas from "./Table/TablePersonas";
 import usePetitionGet from "../../hooks/useGetPetition";
 import Loading from "../Utilitarios/Loading";
+import { useNavigate } from "react-router-dom";
 
 const AdminDashboard = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [personas, setPersonas] = useState([]);
   const [rutaPersona, setRutaPersona] = useState(""); // Inicializamos como cadena vacía
+  const navigate =useNavigate();
+  const handlerClickNav=(data) =>{
+        navigate(data)
+  }
 
   // Hook para obtener personas, solo se activa cuando rutaPersona no es vacía
   const { dato: personaData, cargando: personaCargando } = usePetitionGet({
@@ -51,7 +56,15 @@ const AdminDashboard = () => {
               <Card.Text>
                 Administra y gestiona la información de tus clientes y usuarios.
               </Card.Text>
-              <Button variant="secondary">Ir a Gestión</Button>
+              <DropdownButton
+                    id="dropdown-basic-button"
+                    variant="outline-light"
+                    title="Gestion de Clientes y Usuarios"
+                  >
+                    <Dropdown.Item onClick={()=>handlerClickNav('/updsHospital/registroPersona')}>Registro datos</Dropdown.Item>
+                    <Dropdown.Item onClick={()=>handlerClickNav('/updsHospital/ListPersona')}>Registro Empeado</Dropdown.Item>
+                    <Dropdown.Item onClick={()=>handlerClickNav('RegistroUsuario')}>Creacion de Usuarios</Dropdown.Item>
+                  </DropdownButton>
             </Card.Body>
           </Card>
         </Col>

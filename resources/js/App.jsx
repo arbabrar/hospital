@@ -9,6 +9,8 @@ import Login from './components/Login';
 import NotFound from './components/Utilitarios/Error/Nofound';
 import { UserContextProvider } from './context/UserContext';
 import AdminDashboard from './components/Layout/AdminDashboard';
+import PersonaForm from './components/Personas/PersonaForm';
+import ListPersona from './components/Personas/ListPersona';
 
 
 if (document.getElementById('root')) {
@@ -20,6 +22,8 @@ if (document.getElementById('root')) {
             <Routes>
               <Route path='/updsHospital' element = { <Main/> }>
                 <Route  index element = { <AdminDashboard/> }/>
+                <Route path='registroPersona' element={<PersonaForm/>}/>
+                <Route path='ListPersona' element={<ListPersona/>}/>
               </Route>
               <Route path='/' element={<Welcome/>}/>
               <Route path='login' element={<Login/>}/>
