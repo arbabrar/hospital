@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\empleados as Empleado;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class EmpleadosController extends Controller
 {
@@ -39,7 +40,7 @@ class EmpleadosController extends Controller
 
         $empleado = Empleado::create($request->all());
 
-        return response()->json(['data' => $empleado], 201);
+        return response()->json(['data' => $empleado, 'mensaje' =>"Empleado registrado Exitosamente"], 201);
     }
 
     /**
@@ -94,5 +95,24 @@ class EmpleadosController extends Controller
 
         $empleado->delete();
         return response()->json(['message' => 'Empleado eliminado con éxito'], 200);
+    }
+    public function getInfoEmpleado($data){
+        // Limpiar el parámetro de búsqueda
+        $data = trim($data);
+
+        // Validar que se proporcione un término de búsqueda
+        if (empty($data)) {
+            return response()->json(['error' => 'El parámetro de búsqueda es requerido.'], 400);
+        }
+
+        try {
+            $persona = DB::table('InfoEmpledo')
+                ->where('nombre_completo', 'LIKE', '%' . $data . '%')
+                ->get();
+
+            return response()->json(['persona' => $persona], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Error al obtener la información: ' . $e->getMessage()], 500);
+        }
     }
 }

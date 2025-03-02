@@ -48,7 +48,7 @@ const Menu = () => {
     return (
         <Navbar className="bg-body-tertiary" fixed="top">
             <Container fluid>
-                <Navbar.Brand href="#home">
+                <Navbar.Brand onClick={()=>{navigate("/updsHospital")}}>
                     <img
                         alt="Logo"
                         src={Logo}

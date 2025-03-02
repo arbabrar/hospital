@@ -118,4 +118,11 @@ class PersonaController extends Controller
             return response()->json(['error' => 'Error al obtener la información: ' . $e->getMessage()], 500);
         }
     }
+    public function getPersonaEmpleado($id){
+        $persona = Persona::find($id);
+        if (!$persona) {
+            return response()->json(['message' => 'No se encontró la persona'], 404);
+        }
+        return response()->json(['persona' => $persona, 'empleado' => Persona::getPersonaConEmpleados($id)], 200);
+    }
 }

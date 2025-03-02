@@ -11,35 +11,47 @@ import { useNavigate } from "react-router-dom";
 const AdminDashboard = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [personas, setPersonas] = useState([]);
-  const [rutaPersona, setRutaPersona] = useState(""); // Inicializamos como cadena vacía
-  const navigate =useNavigate();
-  const handlerClickNav=(data) =>{
-        navigate(data)
-  }
+  // Inicializamos la ruta en null para no consumir la API hasta realizar una búsqueda.
+  const [rutaPersona, setRutaPersona] = useState(null);
+  const [mensaje, setMensaje] = useState();
+  const navigate = useNavigate();
 
-  // Hook para obtener personas, solo se activa cuando rutaPersona no es vacía
+  // Memoriza la función de navegación.
+  const handlerClickNav = useCallback((path) => {
+    navigate(path);
+  }, [navigate]);
+
+  // El hook se activa solo si 'rutaPersona' no es null.
   const { dato: personaData, cargando: personaCargando } = usePetitionGet({
     ruta: rutaPersona,
     islogged: true,
   });
 
-  // Actualiza la hora cada segundo
+  // Actualiza la hora cada segundo.
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
 
-  // Función para manejar la búsqueda
+  // Función de búsqueda: solo se actualiza la ruta si hay un término de búsqueda.
   const onsubmitSearch = useCallback((searchTerm) => {
-    if (searchTerm.trim()) {
-      setRutaPersona(`auth/searchPersonas/${searchTerm}`);
+    const trimmed = searchTerm.trim();
+    if (trimmed) {
+      setRutaPersona(`admin/buscarEmpleado/${trimmed}`);
     }
   }, []);
 
-  // Actualiza el estado de personas cuando llega nueva data
+  // Actualiza el estado de 'personas' y 'mensaje' cuando cambia la data recibida.
   useEffect(() => {
     if (personaData) {
-      setPersonas(personaData);
+      // Se asume que la respuesta puede venir como arreglo o como objeto con propiedad 'persona'
+      const data = Array.isArray(personaData) ? personaData : (personaData.persona || []);
+      if (data.length === 0) {
+        setMensaje("No se encontraron datos de acuerdo al criterio de búsqueda");
+      } else {
+        setMensaje(null);
+      }
+      setPersonas(data);
     }
   }, [personaData]);
 
@@ -56,15 +68,8 @@ const AdminDashboard = () => {
               <Card.Text>
                 Administra y gestiona la información de tus clientes y usuarios.
               </Card.Text>
-              <DropdownButton
-                    id="dropdown-basic-button"
-                    variant="outline-light"
-                    title="Gestion de Clientes y Usuarios"
-                  >
-                    <Dropdown.Item onClick={()=>handlerClickNav('/updsHospital/registroPersona')}>Registro datos</Dropdown.Item>
-                    <Dropdown.Item onClick={()=>handlerClickNav('/updsHospital/ListPersona')}>Registro Empeado</Dropdown.Item>
-                    <Dropdown.Item onClick={()=>handlerClickNav('RegistroUsuario')}>Creacion de Usuarios</Dropdown.Item>
-                  </DropdownButton>
+              <Button variant="outline-light"  onClick={() => handlerClickNav('/updsHospital/ListPersona')}>Gestión de Clientes y Usuarios</Button>
+              
             </Card.Body>
           </Card>
         </Col>
@@ -75,7 +80,19 @@ const AdminDashboard = () => {
               <Card.Text>
                 Controla y organiza las categorías y medicamentos disponibles.
               </Card.Text>
-              <Button variant="secondary">Ir a Gestión</Button>
+              <DropdownButton
+                id="dropdown-basic-button"
+                variant="outline-dark"
+                title="Gestión de Categorias y Medicamentos"
+              >
+                <Dropdown.Item onClick={() => handlerClickNav('/updsHospital/ListarCategoria')}>
+                  Ver o Registrar Categoria
+                </Dropdown.Item>
+                <Dropdown.Item onClick={() => handlerClickNav('/updsHospital/registroMeicamento')}>
+                  Registro Medicamento
+                </Dropdown.Item>
+              </DropdownButton>
+              
             </Card.Body>
           </Card>
         </Col>
@@ -97,9 +114,7 @@ const AdminDashboard = () => {
         <Col md={7}>
           <Card bg="dark" text="white" className="card-info">
             <Card.Body>
-              <Card.Text className="text-time">
-                {formatTime(currentTime)}
-              </Card.Text>
+              <Card.Text className="text-time">{formatTime(currentTime)}</Card.Text>
             </Card.Body>
             <Card.Footer className="d-flex justify-content-around">
               <Button
@@ -139,11 +154,8 @@ const AdminDashboard = () => {
           <Card bg="light" text="dark" className="w-100 custom-heigth">
             <Card.Body>
               <Card.Title>Guía Telefónica</Card.Title>
-              <FieldSearch
-                placeholder="Ingrese Nombre o Apellido"
-                getData={onsubmitSearch}
-              />
-              {personaCargando ? <Loading /> : <TablePersonas persona={personas} />}
+              <FieldSearch placeholder="Ingrese Nombre o Apellido" getData={onsubmitSearch} />
+              {personaCargando ? <Loading /> : <TablePersonas persona={personas} mensaje={mensaje} />}
             </Card.Body>
           </Card>
         </Col>

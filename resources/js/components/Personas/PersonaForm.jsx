@@ -16,7 +16,7 @@ const PersonaForm = () => {
   const { respuesta, cargando, error, iniciarSolicitud, setDatos } = usePostPetition("admin/persona",{}, true);
   const [successMessage, setSuccessMessage] = useState(null);
   const navigate = useNavigate();
-  const onSubmit = async (formData) => {
+  const onSubmit = (formData) => {
     // Transformar a mayúsculas todos los campos de texto excepto el email
     const transformedData = {
       ...formData,
@@ -36,7 +36,7 @@ const PersonaForm = () => {
   useEffect(()=>{
       if(respuesta){
         setSuccessMessage("¡Persona registrada con éxito!");
-        navigate("/updsHospital");
+        navigate("/updsHospital/ListPersona");
       }
   },[respuesta])
 
@@ -54,7 +54,7 @@ const PersonaForm = () => {
           )}
 
           {error && (
-            <ErrorMessage mensaje={error.general ? error.general[0] : "Error al registrar la persona"} />
+            <ErrorMessage mensaje={error.message} />
           )}
 
           <Form onSubmit={handleSubmit(onSubmit)} className="mt-3">

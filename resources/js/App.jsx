@@ -11,6 +11,11 @@ import { UserContextProvider } from './context/UserContext';
 import AdminDashboard from './components/Layout/AdminDashboard';
 import PersonaForm from './components/Personas/PersonaForm';
 import ListPersona from './components/Personas/ListPersona';
+import HolderAsociarPersonal from './components/Layout/Holder/HolderAsociarPersonal';
+import HolderCrearUsuario from './components/Layout/Holder/HolderCrearUsuario';
+import ListaCategoria from './components/Categorias/LIstaCategoria';
+import MedicamentoForm from './components/Medicamentos/MedicamentoForm';
+
 
 
 if (document.getElementById('root')) {
@@ -24,6 +29,10 @@ if (document.getElementById('root')) {
                 <Route  index element = { <AdminDashboard/> }/>
                 <Route path='registroPersona' element={<PersonaForm/>}/>
                 <Route path='ListPersona' element={<ListPersona/>}/>
+                <Route path='AsociarPersona/:id' element={<HolderAsociarPersonal />}/>
+                <Route path='CrearUsuario/:id' element={<HolderCrearUsuario/>} />
+                <Route path='ListarCategoria' element={<ListaCategoria/>} />
+                <Route path='registroMeicamento' element={<MedicamentoForm/>}/>
               </Route>
               <Route path='/' element={<Welcome/>}/>
               <Route path='login' element={<Login/>}/>

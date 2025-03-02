@@ -19,7 +19,7 @@ class inventario extends Model
     
     // Define los campos que se pueden rellenar mediante la asignación masiva de atributos
     // En este caso, los campos son medicamento_id, cantidad y fecha_ingreso
-    protected $fillable = ['medicamento_id', 'cantidad', 'fecha_ingreso'];
+    protected $fillable = ['medicamento_id', 'cantidad', 'fecha_ingreso','precio_venta'];
 
     // Define una relación entre el modelo inventario y el modelo Medicamento
     // La relación es de tipo "pertenece a" (belongsTo), lo que significa que un inventario pertenece a un medicamento

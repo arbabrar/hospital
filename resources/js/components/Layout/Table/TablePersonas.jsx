@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Table, Alert, Button } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import PropTypes from "prop-types";
 
-const TablePersonas = ({ persona= [], onEdit, onDelete }) => {
-    const navigate = useNavigate();
-    const personasArray = Array.isArray(persona) ? persona : [];
+const TablePersonas = ({ persona = [], onEdit, onDelete, isSearch = true, mensaje }) => {
+  // Usamos useMemo para asegurarnos de que personasArray se recalcula solo cuando cambie la prop "persona"
+  const personasArray = useMemo(() => (Array.isArray(persona) ? persona : []), [persona]);
+
+  // Calcula el número de columnas según el valor de isSearch.
+  const colSpanValue = isSearch ? 4 : 5;
+
   return (
     <Table responsive variant="dark">
       <thead>
@@ -13,42 +17,45 @@ const TablePersonas = ({ persona= [], onEdit, onDelete }) => {
           <th>Nombre y Apellido</th>
           <th>Especialidad</th>
           <th>Nro Teléfono</th>
-          <th>Acción</th>
+          {!isSearch && <th>Acción</th>}
         </tr>
       </thead>
       <tbody>
         {personasArray.length === 0 ? (
           <tr>
-            <td colSpan="5">
+            <td colSpan={colSpanValue}>
               <Alert variant="info" className="mb-0">
-                <Button variant="primary" size="sm"
-                  onClick={() => navigate('/')} >Registrar</Button>
+                {mensaje || "Ingrese algún dato para realizar la búsqueda"}
               </Alert>
             </td>
           </tr>
         ) : (
-            personasArray.map((p, index) => (
+          personasArray.map((p, index) => (
             <tr key={p.id || index}>
               <td>{index + 1}</td>
-              <td>{p.nombreApellido}</td>
-              <td>{p.especialidad}</td>
+              <td>{p.nombre_completo}</td>
+              <td>{p.cargo}</td>
               <td>{p.telefono}</td>
-              <td>
-                <Button
-                  variant="warning"
-                  size="sm"
-                  onClick={() => onEdit && onEdit(p.id)}
-                >
-                  Editar
-                </Button>{" "}
-                <Button
-                  variant="danger"
-                  size="sm"
-                  onClick={() => onDelete && onDelete(p.id)}
-                >
-                  Eliminar
-                </Button>
-              </td>
+              {!isSearch && (
+                <td>
+                  <Button
+                    variant="warning"
+                    size="sm"
+                    aria-label={`Editar persona ${p.nombre_completo}`}
+                    onClick={() => onEdit && onEdit(p.id)}
+                  >
+                    Editar
+                  </Button>{" "}
+                  <Button
+                    variant="danger"
+                    size="sm"
+                    aria-label={`Eliminar persona ${p.nombre_completo}`}
+                    onClick={() => onDelete && onDelete(p.id)}
+                  >
+                    Eliminar
+                  </Button>
+                </td>
+              )}
             </tr>
           ))
         )}
@@ -57,5 +64,12 @@ const TablePersonas = ({ persona= [], onEdit, onDelete }) => {
   );
 };
 
-export default TablePersonas;
+TablePersonas.propTypes = {
+  persona: PropTypes.array,
+  onEdit: PropTypes.func,
+  onDelete: PropTypes.func,
+  isSearch: PropTypes.bool,
+  mensaje: PropTypes.string,
+};
 
+export default TablePersonas;

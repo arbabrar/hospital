@@ -13,18 +13,25 @@ Route::prefix('v1')->group(function(){
     //rutas publicas
     Route::get('/public/{slug}',[ApiController::class,'categorias']);
     Route::post('/admin/persona',[PersonaController::class,'store']);
-    Route::post('/admin/empleados', [EmpleadosController::class,'store']);
+    
     //rutas de autenticacion
-    Route::post('/auth/register',[AuthController::class,'register']);
     Route::post('/auth/login',[AuthController::class,'login']);
     
     //rutas privadas
 
     Route::group(['middleware'=>'auth:sanctum'], function () {
+        
+        Route::post('/auth/register',[AuthController::class,'register']);
         Route::post('/auth/logout',[AuthController::class,'logout']);
         Route::get('/admin/buscarPersona/{data}',[PersonaController::class,'getInfoPersona']);
+        Route::get('/admin/getPersonaByID/{id}',[PersonaController::class,'show']);
+        Route::get('/admin/PersonaEmpleado/{id}', [PersonaController::class,'getPersonaEmpleado']);
+        Route::get('/admin/buscarEmpleado/{data}',[EmpleadosController::class,'getInfoEmpleado']);
+        Route::post('/admin/empleados', [EmpleadosController::class,'store']);
+        
         //::rol admin
         Route::apiResource('/admin/categoria', CategoriaController::class);
+        Route::get('/admin/categoria/buscar/{data}', [CategoriaController::class, 'searchDescription']);
         Route::apiResource('/admin/inventario', InventarioController::class);
         Route::apiResource('/admin/medicamento',MedicamentoController::class);
        
