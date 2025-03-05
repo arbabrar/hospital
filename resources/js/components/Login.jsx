@@ -27,7 +27,12 @@ const Login = () => {
           localStorage.setItem("UPDSHospital", respuesta.token);
           const usuario = respuesta.user || {};
           localStorage.setItem("appCredential", JSON.stringify(usuario));
-          navigate("/updsHospital");
+          if (usuario.role ==='admin'){
+            navigate("/updsHospital");
+          }else{
+            navigate("/updsFarmacia");
+          }
+          
         }
       }, [respuesta, navigate]);
 

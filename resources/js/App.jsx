@@ -15,6 +15,10 @@ import HolderAsociarPersonal from './components/Layout/Holder/HolderAsociarPerso
 import HolderCrearUsuario from './components/Layout/Holder/HolderCrearUsuario';
 import ListaCategoria from './components/Categorias/LIstaCategoria';
 import MedicamentoForm from './components/Medicamentos/MedicamentoForm';
+import NoAuthorized from './components/Utilitarios/NoAuthorized';
+import ProtectedRoute from './components/Utilitarios/ProtectedRoute';
+import FarmaciaDasborad from './components/Layout/FarmaciaDashboard';
+import RegistroVentas from './components/Ventas/RegistroVentas';
 
 
 
@@ -26,17 +30,27 @@ if (document.getElementById('root')) {
         <BrowserRouter>
             <Routes>
               <Route path='/updsHospital' element = { <Main/> }>
-                <Route  index element = { <AdminDashboard/> }/>
-                <Route path='registroPersona' element={<PersonaForm/>}/>
+                <Route  index element = { <ProtectedRoute allowedRoles={['admin']}><AdminDashboard/></ProtectedRoute>  }/>
+                       
+                <Route path='registroPersona' element={
+                  <ProtectedRoute allowedRoles={['admin']}>                                                                                                                                                                                                                                                                                
+                    <PersonaForm/>
+                </ProtectedRoute> }/>
                 <Route path='ListPersona' element={<ListPersona/>}/>
-                <Route path='AsociarPersona/:id' element={<HolderAsociarPersonal />}/>
-                <Route path='CrearUsuario/:id' element={<HolderCrearUsuario/>} />
-                <Route path='ListarCategoria' element={<ListaCategoria/>} />
-                <Route path='registroMeicamento' element={<MedicamentoForm/>}/>
+                <Route path='AsociarPersona/:id' element={ <ProtectedRoute allowedRoles={['admin']}>  <HolderAsociarPersonal /> </ProtectedRoute>}/>
+                //rutas empleado
+                <Route path='CrearUsuario/:id' element={<ProtectedRoute allowedRoles={['admin']}><HolderCrearUsuario/></ProtectedRoute>} />
+                <Route path='ListarCategoria' element={<ProtectedRoute allowedRoles={['admin']}><ListaCategoria/></ProtectedRoute>} />
+                <Route path='registroMeicamento' element={<ProtectedRoute allowedRoles={['admin']}><MedicamentoForm/></ProtectedRoute>}/>
+              </Route>
+              <Route path='/updsFarmacia' element={<Main />}>
+                  <Route index element={<ProtectedRoute allowedRoles={['empleado']}><FarmaciaDasborad/></ProtectedRoute>} />
+                  <Route path='sale' element={<RegistroVentas/>}/>
               </Route>
               <Route path='/' element={<Welcome/>}/>
               <Route path='login' element={<Login/>}/>
               <Route path='*' element={<NotFound/>}/>
+              <Route path='/NotAuthorized' element={<NoAuthorized/>}/>
             </Routes>
         </BrowserRouter>
       </UserContextProvider>
